@@ -1,0 +1,19 @@
+!!!
+%html
+  %head
+    %title #{@title}
+  %body
+    #header
+      %h1 #{@title}
+    #content
+      %ul
+        - @entries.each do |entry|
+          %li
+            %a{ :href => add_schema(entry.url) } #{shorten(entry.url)}
+            (#{timefmt(entry.created_at)})
+      %p
+        added #{@url}
+        %form{ :action => "/add", :method => "post" }
+          %input{ :type => "texfield", :name => "url" }
+          %input{ :type => "submit", :value => "send" }
+
