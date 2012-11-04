@@ -3,8 +3,15 @@ if development?
   require 'sinatra/reloader'
 end
 
-Sequel::Model.plugin(:schema)
+enable :sessions, :logging
 
+use OmniAuth::Builder do
+  config = YAML.load_file("config.yml")
+  provider :twitter, config["CONSUMER_KEY"], config["CONSUMER_SECRET"]
+end
+
+
+Sequel::Model.plugin(:schema)
 Sequel.sqlite('db/links.db')
 class Entries < Sequel::Model
   plugin :timestamps, :update_on_create => true
@@ -35,6 +42,10 @@ post '/add' do
   redirect '/'
 end
 
+get '/auth/:name/callback' do
+  @auth = request.env['omniauth.auth']
+  haml :index
+end
 
 helpers do
   def add_schema(url)
