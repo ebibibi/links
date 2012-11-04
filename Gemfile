@@ -7,6 +7,7 @@ gem 'sequel'
 gem 'sanitize'
 gem 'mechanize'
 gem 'omniauth'
+gem 'omniauth-twitter'
 
 group :development do
   gem 'sinatra-contrib'

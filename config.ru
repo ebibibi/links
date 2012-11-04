@@ -6,6 +6,7 @@ require 'sequel'
 require 'sanitize'
 require 'mechanize'
 require 'omniauth'
+require 'omniauth-twitter'
 require 'yaml'
 
 require './server.rb'
