@@ -73,8 +73,14 @@ helpers do
     '<a href="https://twitter.com/share" class="twitter-share-button" data-url="' + url + '" data-via="" data-lang="ja">ツイート</a>'
   end
 
+  def google(url)
+    '<div class="g-plusone" data-size="medium" data-href="' + url + '"></div>'
+  end
+
   def capture(url)
     '<img class="alignleft" align="left" border="0" src="http://capture.heartrails.com/150x130/shadow?' + url +'" alt="" width="150" height="130" />'
   end
+
+ 
 end
 
