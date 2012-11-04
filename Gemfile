@@ -7,7 +7,6 @@ gem 'sequel'
 gem 'sanitize'
 gem 'mechanize'
 gem 'omniauth'
-gem 'yaml'
 
 group :development do
   gem 'sinatra-contrib'
