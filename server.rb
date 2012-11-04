@@ -44,7 +44,7 @@ end
 
 get '/auth/:name/callback' do
   @auth = request.env['omniauth.auth']
-  haml :index
+  redirect '/'
 end
 
 helpers do
