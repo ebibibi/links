@@ -5,6 +5,8 @@ gem 'haml'
 gem 'sqlite3'
 gem 'sequel'
 gem 'sanitize'
+gem 'mechanize'
+
 
 group :development do
   gem 'sinatra-contrib'

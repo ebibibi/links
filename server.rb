@@ -12,6 +12,7 @@ class Entries < Sequel::Model
     set_schema do
       primary_key :id
       string :url
+      string :title
       timestamp :created_at
       timestamp :updated_at
     end
@@ -29,7 +30,7 @@ end
 
 post '/add' do
   @title = 'Links!!'
-  @entry = Entries.new :url => Sanitize.clean(params[:url])
+  @entry = Entries.new :url => Sanitize.clean(params[:url]), :title => title(add_schema(params[:url]))
   @entry.save
   redirect '/'
 end
@@ -75,6 +76,12 @@ helpers do
 
   def google(url)
     '<div class="g-plusone" data-size="medium" data-href="' + url + '"></div>'
+  end
+
+  def title(url)
+    agent = Mechanize.new
+    agent.get(url)
+    agent.page.title    
   end
 
   def capture(url)
