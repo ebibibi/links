@@ -1,3 +1,4 @@
+# -*- coding: undecided -*-
 if development?
   require 'sinatra/reloader'
 end
@@ -62,6 +63,10 @@ helpers do
     else
       ''
     end
+  end
+
+  def hatebu(url)
+    '<a href="http://b.hatena.ne.jp/entry/' + url + '" class="hatena-bookmark-button" data-hatena-bookmark-layout="simple-balloon" title="このエントリーをはてなブックマークに追加"><img src="http://b.st-hatena.com/images/entry-button/button-only.gif" alt="このエントリーをはてなブックマークに追加" width="20" height="20" style="border: none;" /></a><script type="text/javascript" src="http://b.st-hatena.com/js/bookmark_button.js" charset="utf-8" async="async"></script>'
   end
 end
 

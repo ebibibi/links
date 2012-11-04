@@ -10,6 +10,7 @@
         - @entries.each do |entry|
           %li
             %a{ :href => add_schema(entry.url) } #{shorten(entry.url)}
+            #{hatebu(add_schema(entry.url))}
             (#{timefmt(entry.created_at)})
       %p
         added #{@url}
