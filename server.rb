@@ -3,10 +3,11 @@ if development?
   require 'sinatra/reloader'
 end
 
-#use Rack::Session::Cookie
+
+config = YAML.load_file("config.yml")
+
 set :session, true
 use OmniAuth::Builder do
-  config = YAML.load_file("config.yml")
   provider :twitter, config["CONSUMER_KEY"], config["CONSUMER_SECRET"]
 end
 
@@ -30,7 +31,11 @@ end
 
 
 get '/' do
-  @auth = request.env['omniauth.auth']
+  if session[:nickname] == config["ADMIN_NAME"]
+    @admin_mode = true
+  else
+    @admin_mode = false
+  end
   @title = 'Links!!'
   @entries = Entries.all
   haml :index
@@ -46,9 +51,12 @@ end
 get '/auth/:name/callback' do
   @auth = request.env['omniauth.auth']
   session[:nickname] = @auth["info"]["nickname"]
-  @title = 'Links!!'
-  @entries = Entries.all
-  haml :index
+  redirect '/'
+end
+
+get '/logout' do
+  session[:nickname] = nil
+  redirect '/'
 end
 
 helpers do

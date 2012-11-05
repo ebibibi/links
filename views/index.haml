@@ -7,7 +7,13 @@
       %h1 #{@title}
       %a{:href => '/auth/twitter'} Sign in Twitter
       - if !session[:nickname].nil?
-        %p #{session[:nickname]}
+        %p #{session[:nickname]}でログイン中
+        %a{:href => '/logout'} logout
+    - if @admin_mode
+      #addform
+        %form{:action => "/add", :method => "post"}
+          %input{:type => "texfield", :name => "url"}
+          %input{:type => "submit", :value => "send"}
     #content
       - @entries.each do |entry|
         .link_item
@@ -19,12 +25,6 @@
           #{twitter(add_schema(entry.url))}
           #{google(add_schema(entry.url))}
         %br{:clear => "both"}
-
-  %p
-    added #{@url}
-    %form{:action => "/add", :method => "post"}
-      %input{:type => "texfield", :name => "url"}
-      %input{:type => "submit", :value => "send"}
 
   #script
     %script{:type => "text/javascript", :src => "http://b.st-hatena.com/js/bookmark_button.js", :charset => "utf-8", :async => "async"}
