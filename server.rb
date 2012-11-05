@@ -3,8 +3,8 @@ if development?
   require 'sinatra/reloader'
 end
 
-enable :sessions, :logging
-
+#use Rack::Session::Cookie
+set :session, true
 use OmniAuth::Builder do
   config = YAML.load_file("config.yml")
   provider :twitter, config["CONSUMER_KEY"], config["CONSUMER_SECRET"]
@@ -45,6 +45,7 @@ end
 
 get '/auth/:name/callback' do
   @auth = request.env['omniauth.auth']
+  session[:nickname] = @auth["info"]["nickname"]
   @title = 'Links!!'
   @entries = Entries.all
   haml :index

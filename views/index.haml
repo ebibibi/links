@@ -6,9 +6,8 @@
     #header
       %h1 #{@title}
       %a{:href => '/auth/twitter'} Sign in Twitter
-      - if !@auth.nil?
-        - pp @auth
-        %p #{@auth["info"]["nickname"]}
+      - if !session[:nickname].nil?
+        %p #{session[:nickname]}
     #content
       - @entries.each do |entry|
         .link_item
