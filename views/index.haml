@@ -6,11 +6,14 @@
     #header
       %h1 #{@title}
       %a{:href => '/auth/twitter'} Sign in Twitter
+      - if !@auth.nil?
+        - pp @auth
+        %p #{@auth["info"]["nickname"]}
     #content
       - @entries.each do |entry|
         .link_item
           #{capture(add_schema(entry.url))}
-          %a{ :href => add_schema(entry.url) }
+          %a{:href => add_schema(entry.url)}
             #{entry.title}
           %br
           #{hatebu(add_schema(entry.url))}

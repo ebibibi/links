@@ -30,6 +30,7 @@ end
 
 
 get '/' do
+  @auth = request.env['omniauth.auth']
   @title = 'Links!!'
   @entries = Entries.all
   haml :index
@@ -44,7 +45,9 @@ end
 
 get '/auth/:name/callback' do
   @auth = request.env['omniauth.auth']
-  redirect '/'
+  @title = 'Links!!'
+  @entries = Entries.all
+  haml :index
 end
 
 helpers do
@@ -59,7 +62,7 @@ helpers do
       url
     end
   end
-  
+
   def shorten(str, max = 20)
     if str.length > max
       "#{str[0..max.to_i]}..."
