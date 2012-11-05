@@ -7,6 +7,7 @@ end
 config = YAML.load_file("config.yml")
 
 set :session, true
+use Rack::Session::Cookie
 use OmniAuth::Builder do
   provider :twitter, config["CONSUMER_KEY"], config["CONSUMER_SECRET"]
 end
@@ -36,6 +37,7 @@ get '/' do
   else
     @admin_mode = false
   end
+
   @title = 'Links!!'
   @entries = Entries.all
   haml :index
