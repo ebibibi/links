@@ -20,6 +20,7 @@ class Entries < Sequel::Model
   unless table_exists?
     set_schema do
       primary_key :id
+      integer :order
       string :url
       string :title
       timestamp :created_at
@@ -47,6 +48,7 @@ post '/add' do
   @title = 'Links!!'
   @entry = Entries.new :url => Sanitize.clean(params[:url]), :title => title(add_schema(params[:url]))
   @entry.save
+  @entry.update(:order => @entry.id)
   redirect '/'
 end
 
