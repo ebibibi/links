@@ -21,6 +21,8 @@ class Entries < Sequel::Model
     set_schema do
       primary_key :id
       integer :order
+      integer :before
+      integer :next
       string :url
       string :title
       timestamp :created_at
@@ -45,10 +47,16 @@ get '/' do
 end
 
 post '/add' do
-  @title = 'Links!!'
-  @entry = Entries.new :url => Sanitize.clean(params[:url]), :title => title(add_schema(params[:url]))
-  @entry.save
-  @entry.update(:order => @entry.id)
+  before = Entries.order(:order).last
+  new_entry = Entries.new :url => Sanitize.clean(params[:url]), :title => title(add_schema(params[:url]))
+  new_entry.save
+  new_entry.update(:order => new_entry.id)
+  if before.nil?
+    new_entry.update(:before => 0)
+  else
+    new_entry.update(:before => before.id)
+    before.update(:next => new_entry.id)
+  end
   redirect '/'
 end
 

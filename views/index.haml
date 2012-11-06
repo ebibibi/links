@@ -18,7 +18,9 @@
       - @entries.each do |entry|
         .link_item
           #{capture(add_schema(entry.url))}
-          %p #{entry.order}
+          %p order:#{entry.order}
+          %p before:#{entry.before}
+          %p next:#{entry.next}
           %a{:href => add_schema(entry.url)}
             #{entry.title}
           %br
