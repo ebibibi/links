@@ -18,11 +18,14 @@
       - @entries.each do |entry|
         .link_item
           #{capture(add_schema(entry.url))}
+          %p #{entry.order}
           %a{:href => add_schema(entry.url)}
             #{entry.title}
           %br
           #{hatebu(add_schema(entry.url))}
+          %br
           #{twitter(add_schema(entry.url))}
+          %br
           #{google(add_schema(entry.url))}
         %br{:clear => "both"}
 

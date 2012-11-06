@@ -40,7 +40,7 @@ get '/' do
   end
 
   @title = 'Links!!'
-  @entries = Entries.all
+  @entries = Entries.order(:order).all
   haml :index
 end
 
