@@ -18,6 +18,7 @@
       - @entries.each do |entry|
         .link_item
           #{capture(add_schema(entry.url))}
+          %p id:#{entry.id}
           %p order:#{entry.order}
           %p before:#{entry.before}
           %p next:#{entry.next}
@@ -29,8 +30,22 @@
           #{twitter(add_schema(entry.url))}
           %br
           #{google(add_schema(entry.url))}
-        %br{:clear => "both"}
+          - if @admin_mode
+            #change_order
+              %form{:action => "/move_up", :method => "post"}
+                %input{:type => "hidden", :name => "id", :value => entry.id}
+                %input{:type => "hidden", :name => "order", :value => entry.order}
+                %input{:type => "hidden", :name => "before", :value => entry.before}
+                %input{:type => "hidden", :name => "next", :value => entry.next}
+                %input{:type => "submit", :value => "up"}
+              %form{:action => "/move_down", :method => "post"}
+                %input{:type => "hidden", :name => "id", :value => entry.id}
+                %input{:type => "hidden", :name => "order", :value => entry.order}
+                %input{:type => "hidden", :name => "before", :value => entry.before}
+                %input{:type => "hidden", :name => "next", :value => entry.next}
+                %input{:type => "submit", :value => "down"}
 
+        %br{:clear => "both"}
   #script
     %script{:type => "text/javascript", :src => "http://b.st-hatena.com/js/bookmark_button.js", :charset => "utf-8", :async => "async"}
     %script

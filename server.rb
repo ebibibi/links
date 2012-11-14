@@ -60,6 +60,35 @@ post '/add' do
   redirect '/'
 end
 
+post '/move_up' do
+  puts params[:before]
+  if params[:before] == '0'
+    redirect '/'
+  end
+
+  target_link = Entries[:id => params[:id]]
+  before_link = Entries[:id => params[:before]]
+  before_before_link = Entries[:id => before_link.before]
+
+
+  original_target_order = target_link.order
+  original_target_next = target_link.next
+  target_link.update(:order => before_link.order)
+  target_link.update(:before => before_link.before)
+  target_link.update(:next => before_link.id)
+  
+  before_link.update(:order => original_target_order)
+  before_link.update(:before => target_link.id)
+  before_link.update(:next => original_target_next)
+
+  if !(before_before_link.nil?)
+    before_before_link.update(:next => target_link.id)
+  end
+
+  redirect '/'
+end
+
+
 get '/auth/:name/callback' do
   @auth = request.env['omniauth.auth']
   session[:nickname] = @auth["info"]["nickname"]
