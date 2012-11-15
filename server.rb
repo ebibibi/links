@@ -52,22 +52,15 @@ post '/add' do
 end
 
 post '/move_up' do
-  puts "order:" + params[:order]
   if params[:order] == '1'
     redirect '/'
   end
 
   target_link = Entries[:order => params[:order]]
   before_link = Entries[:order => params[:order].to_i - 1]
-  puts "target_link.id:" + target_link.id.to_s
-  puts "target_link.order:" + target_link.order.to_s
-  puts "before_link.id:" + before_link.id.to_s
-  puts "before_link.order:" + before_link.order.to_s
 
   target_link.update(:order => target_link.order.to_i - 1)
   before_link.update(:order => before_link.order.to_i + 1)
-  puts "changed target_link.order:" + target_link.order.to_s
-  puts "changed before_link.order:" + before_link.order.to_s
 
   redirect '/'
 end
