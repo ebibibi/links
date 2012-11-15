@@ -20,8 +20,6 @@
           #{capture(add_schema(entry.url))}
           %p id:#{entry.id}
           %p order:#{entry.order}
-          %p before:#{entry.before}
-          %p next:#{entry.next}
           %a{:href => add_schema(entry.url)}
             #{entry.title}
           %br
@@ -33,16 +31,10 @@
           - if @admin_mode
             #change_order
               %form{:action => "/move_up", :method => "post"}
-                %input{:type => "hidden", :name => "id", :value => entry.id}
                 %input{:type => "hidden", :name => "order", :value => entry.order}
-                %input{:type => "hidden", :name => "before", :value => entry.before}
-                %input{:type => "hidden", :name => "next", :value => entry.next}
                 %input{:type => "submit", :value => "up"}
               %form{:action => "/move_down", :method => "post"}
-                %input{:type => "hidden", :name => "id", :value => entry.id}
                 %input{:type => "hidden", :name => "order", :value => entry.order}
-                %input{:type => "hidden", :name => "before", :value => entry.before}
-                %input{:type => "hidden", :name => "next", :value => entry.next}
                 %input{:type => "submit", :value => "down"}
 
         %br{:clear => "both"}
@@ -58,6 +50,5 @@
       var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
       })();
 
-    
 
 

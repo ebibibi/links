@@ -21,8 +21,6 @@ class Entries < Sequel::Model
     set_schema do
       primary_key :id
       integer :order
-      integer :before
-      integer :next
       string :url
       string :title
       timestamp :created_at
@@ -47,43 +45,29 @@ get '/' do
 end
 
 post '/add' do
-  before = Entries.order(:order).last
   new_entry = Entries.new :url => Sanitize.clean(params[:url]), :title => title(add_schema(params[:url]))
   new_entry.save
-  new_entry.update(:order => new_entry.id)
-  if before.nil?
-    new_entry.update(:before => 0)
-  else
-    new_entry.update(:before => before.id)
-    before.update(:next => new_entry.id)
-  end
+  new_entry.update(:order => new_entry.id.to_i)
   redirect '/'
 end
 
 post '/move_up' do
-  puts params[:before]
-  if params[:before] == '0'
+  puts "order:" + params[:order]
+  if params[:order] == '1'
     redirect '/'
   end
 
-  target_link = Entries[:id => params[:id]]
-  before_link = Entries[:id => params[:before]]
-  before_before_link = Entries[:id => before_link.before]
+  target_link = Entries[:order => params[:order]]
+  before_link = Entries[:order => params[:order].to_i - 1]
+  puts "target_link.id:" + target_link.id.to_s
+  puts "target_link.order:" + target_link.order.to_s
+  puts "before_link.id:" + before_link.id.to_s
+  puts "before_link.order:" + before_link.order.to_s
 
-
-  original_target_order = target_link.order
-  original_target_next = target_link.next
-  target_link.update(:order => before_link.order)
-  target_link.update(:before => before_link.before)
-  target_link.update(:next => before_link.id)
-  
-  before_link.update(:order => original_target_order)
-  before_link.update(:before => target_link.id)
-  before_link.update(:next => original_target_next)
-
-  if !(before_before_link.nil?)
-    before_before_link.update(:next => target_link.id)
-  end
+  target_link.update(:order => target_link.order.to_i - 1)
+  before_link.update(:order => before_link.order.to_i + 1)
+  puts "changed target_link.order:" + target_link.order.to_s
+  puts "changed before_link.order:" + before_link.order.to_s
 
   redirect '/'
 end
