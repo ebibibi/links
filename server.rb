@@ -65,6 +65,20 @@ post '/move_up' do
   redirect '/'
 end
 
+post '/move_down' do
+  if params[:order].to_i == Entries.all.length
+    redirect '/'
+  end
+
+  target_link = Entries[:order => params[:order]]
+  next_link = Entries[:order => params[:order].to_i + 1]
+
+  target_link.update(:order => target_link.order.to_i + 1)
+  next_link.update(:order => next_link.order.to_i - 1)
+
+  redirect '/'
+end
+
 
 get '/auth/:name/callback' do
   @auth = request.env['omniauth.auth']
