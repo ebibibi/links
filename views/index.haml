@@ -14,19 +14,13 @@
             %span.icon-bar
             %span.icon-bar
             %span.icon-bar
-          %a.brand{:href => "#"}
+          %a.brand{:href => "/"}
             Links!!
           %div.nav-collapse.collapse
             %ul.nav
-              %li.active
-                %a{:href => "#"}
-                  Home
-              %li
-                %a{:href => "#about"}
-                  About
-              %li
-                %a{:href => "#contact"}
-                  Contact
+              - @linktags.each do |tag|
+                %li
+                  %a{:href => "/#{tag}"} #{tag}
 
     %div.container
       #header
@@ -38,20 +32,23 @@
       - if @admin_mode
         #addform
           %form{:action => "/add", :method => "post"}
+            url:
             %input{:type => "texfield", :name => "url"}
+            tag:
+            %input{:type => "texfield", :name => "tags"}
             %input{:type => "submit", :value => "send"}
       #content
         - @entries.each do |entry|
           .link_item
             #{capture(add_schema(entry.url))}
-            %a{:href => add_schema(entry.url)}
-              #{entry.title}
-            %br
+            %h3
+              %a{:href => add_schema(entry.url)}
+                #{entry.title}
             #{hatebu(add_schema(entry.url))}
-            %br
             #{twitter(add_schema(entry.url))}
-            %br
             #{google(add_schema(entry.url))}
+            %br
+            tags:#{entry.tags}
             - if @admin_mode
               #change_order
                 %form{:action => "/move_up", :method => "post"}
@@ -60,7 +57,13 @@
                 %form{:action => "/move_down", :method => "post"}
                   %input{:type => "hidden", :name => "order", :value => entry.order}
                   %input{:type => "submit", :value => "down"}
-            %br{:clear => "both"}
+              #change_tag
+                %form{:action => "/change_tag", :method => "post"}
+                  tag:
+                  %input{:type => "texfield", :name => "tags"}
+                  %input{:type => "hidden", :name => "order", :value => entry.order}
+                  %input{:type => "submit", :value => "change_tag"}
+          %br{:clear => "both"}
     #script
       %script{:type => "text/javascript", :src => "http://b.st-hatena.com/js/bookmark_button.js", :charset => "utf-8", :async => "async"}
       %script

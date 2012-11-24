@@ -23,6 +23,7 @@ class Entries < Sequel::Model
       integer :order
       string :url
       string :title
+      string :tags
       timestamp :created_at
       timestamp :updated_at
     end
@@ -41,6 +42,7 @@ get '/' do
 
   @title = 'Links!!'
   @entries = Entries.order(:order).all
+  @linktags = ['windows', 'exchange']
   haml :index
 end
 
@@ -48,6 +50,8 @@ post '/add' do
   new_entry = Entries.new :url => Sanitize.clean(params[:url]), :title => title(add_schema(params[:url]))
   new_entry.save
   new_entry.update(:order => new_entry.id.to_i)
+  new_entry.update(:tags => params[:tags])
+
   redirect '/'
 end
 
@@ -76,6 +80,13 @@ post '/move_down' do
   target_link.update(:order => target_link.order.to_i + 1)
   next_link.update(:order => next_link.order.to_i - 1)
 
+  redirect '/'
+end
+
+post '/change_tag' do
+  target_link = Entries[:order => params[:order]]
+  target_link.update(:tags => params[:tags])
+  
   redirect '/'
 end
 
