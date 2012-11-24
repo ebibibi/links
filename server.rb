@@ -32,7 +32,6 @@ class Entries < Sequel::Model
 end
 
 
-
 get '/' do
   if session[:nickname] == config["ADMIN_NAME"]
     @admin_mode = true
@@ -42,6 +41,21 @@ get '/' do
 
   @title = 'Links!!'
   @entries = Entries.order(:order).all
+  @linktags = ['windows', 'exchange']
+  haml :index
+end
+
+get '/logout' do
+  session[:nickname] = nil
+  redirect '/'
+end
+
+
+get '/:tag' do
+  @admin_mode = false
+
+  @title = params[:tag]
+  @entries = Entries.order(:order).filter(:tags.ilike("%[" + @title + "]%"))
   @linktags = ['windows', 'exchange']
   haml :index
 end
@@ -97,10 +111,6 @@ get '/auth/:name/callback' do
   redirect '/'
 end
 
-get '/logout' do
-  session[:nickname] = nil
-  redirect '/'
-end
 
 helpers do
   def add_schema(url)
