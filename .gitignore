@@ -11,3 +11,5 @@ db/links.db
 
 
 config.yml
+
+*.db
