@@ -33,6 +33,7 @@ end
 
 before do
   @linktags = ['windows', 'exchange']  
+  @google_analytics = config["GOOGLE_ANALYTICS"]
 end
 
 
