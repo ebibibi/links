@@ -46,6 +46,7 @@
             %br
             tags:#{entry.tags}
             - if @admin_mode
+              %br{:clear => "both"}
               #change_order
                 %form{:action => "/move_up", :method => "post"}
                   %input{:type => "hidden", :name => "order", :value => entry.order}
@@ -59,6 +60,10 @@
                   %input{:type => "texfield", :name => "tags"}
                   %input{:type => "hidden", :name => "order", :value => entry.order}
                   %input{:type => "submit", :value => "change_tag"}
+              #remove
+                %form{:action => "/remove", :method => "post"}
+                  %input{:type => "hidden", :name => "order", :value => entry.order}
+                  %input{:type => "submit", :value => "remove"}
           %br{:clear => "both"}
       %a{:href => '/auth/twitter'} Sign in Twitter(for admin)
       - if !session[:nickname].nil?

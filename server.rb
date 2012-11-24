@@ -73,6 +73,13 @@ post '/add' do
   redirect '/'
 end
 
+post '/remove' do
+  target_link = Entries[:order => params[:order]]
+  target_link.delete
+
+  redirect '/'
+end
+
 post '/move_up' do
   if params[:order] == '1'
     redirect '/'
