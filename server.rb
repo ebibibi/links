@@ -31,17 +31,22 @@ class Entries < Sequel::Model
   end
 end
 
+before do
+  @linktags = ['windows', 'exchange']  
+end
+
+
 
 get '/' do
+  @title = 'リンク集'
+
   if session[:nickname] == config["ADMIN_NAME"]
     @admin_mode = true
   else
     @admin_mode = false
   end
 
-  @title = 'Links!!'
   @entries = Entries.order(:order).all
-  @linktags = ['windows', 'exchange']
   haml :index
 end
 
@@ -56,7 +61,6 @@ get '/:tag' do
 
   @title = params[:tag]
   @entries = Entries.order(:order).filter(:tags.ilike("%[" + @title + "]%"))
-  @linktags = ['windows', 'exchange']
   haml :index
 end
 
