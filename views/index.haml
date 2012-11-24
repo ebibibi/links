@@ -25,10 +25,6 @@
     %div.container
       #header
         %h1 #{@title}
-        %a{:href => '/auth/twitter'} Sign in Twitter
-        - if !session[:nickname].nil?
-          %p #{session[:nickname]}でログイン中
-          %a{:href => '/logout'} logout
       - if @admin_mode
         #addform
           %form{:action => "/add", :method => "post"}
@@ -64,6 +60,11 @@
                   %input{:type => "hidden", :name => "order", :value => entry.order}
                   %input{:type => "submit", :value => "change_tag"}
           %br{:clear => "both"}
+      %a{:href => '/auth/twitter'} Sign in Twitter(for admin)
+      - if !session[:nickname].nil?
+        %p #{session[:nickname]}でログイン中
+        %a{:href => '/logout'} logout
+
     #script
       %script{:type => "text/javascript", :src => "http://b.st-hatena.com/js/bookmark_button.js", :charset => "utf-8", :async => "async"}
       %script
