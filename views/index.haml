@@ -2,53 +2,78 @@
 %html
   %head
     %title #{@title}
+    %link{:href => "css/bootstrap.css", :rel => "stylesheet"}
+    %style
+      body {padding-top: 60px;}
+    %link{:href => "css/bootstrap-responsive.css", :rel => "stylesheet"}
   %body
-    #header
-      %h1 #{@title}
-      %a{:href => '/auth/twitter'} Sign in Twitter
-      - if !session[:nickname].nil?
-        %p #{session[:nickname]}でログイン中
-        %a{:href => '/logout'} logout
-    - if @admin_mode
-      #addform
-        %form{:action => "/add", :method => "post"}
-          %input{:type => "texfield", :name => "url"}
-          %input{:type => "submit", :value => "send"}
-    #content
-      - @entries.each do |entry|
-        .link_item
-          #{capture(add_schema(entry.url))}
-          %p id:#{entry.id}
-          %p order:#{entry.order}
-          %a{:href => add_schema(entry.url)}
-            #{entry.title}
-          %br
-          #{hatebu(add_schema(entry.url))}
-          %br
-          #{twitter(add_schema(entry.url))}
-          %br
-          #{google(add_schema(entry.url))}
-          - if @admin_mode
-            #change_order
-              %form{:action => "/move_up", :method => "post"}
-                %input{:type => "hidden", :name => "order", :value => entry.order}
-                %input{:type => "submit", :value => "up"}
-              %form{:action => "/move_down", :method => "post"}
-                %input{:type => "hidden", :name => "order", :value => entry.order}
-                %input{:type => "submit", :value => "down"}
+    %div.navbar.navbar-inverse.navbar-fixed-top
+      %div.navbar-inner
+        %div.container
+          %a.btn.btn-navbar{:"data-toggle" => "collapse", :"data-target" => ".nav-collapse"}
+            %span.icon-bar
+            %span.icon-bar
+            %span.icon-bar
+          %a.brand{:href => "#"}
+            Links!!
+          %div.nav-collapse.collapse
+            %ul.nav
+              %li.active
+                %a{:href => "#"}
+                  Home
+              %li
+                %a{:href => "#about"}
+                  About
+              %li
+                %a{:href => "#contact"}
+                  Contact
 
-        %br{:clear => "both"}
-  #script
-    %script{:type => "text/javascript", :src => "http://b.st-hatena.com/js/bookmark_button.js", :charset => "utf-8", :async => "async"}
-    %script
-      !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
-    %script{:type => "text/javascript"}
-      window.___gcfg = {lang: 'ja'};
-      (function() {
-      var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
-      po.src = 'https://apis.google.com/js/plusone.js';
-      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
-      })();
+    %div.container
+      #header
+        %h1 #{@title}
+        %a{:href => '/auth/twitter'} Sign in Twitter
+        - if !session[:nickname].nil?
+          %p #{session[:nickname]}でログイン中
+          %a{:href => '/logout'} logout
+      - if @admin_mode
+        #addform
+          %form{:action => "/add", :method => "post"}
+            %input{:type => "texfield", :name => "url"}
+            %input{:type => "submit", :value => "send"}
+      #content
+        - @entries.each do |entry|
+          .link_item
+            #{capture(add_schema(entry.url))}
+            %a{:href => add_schema(entry.url)}
+              #{entry.title}
+            %br
+            #{hatebu(add_schema(entry.url))}
+            %br
+            #{twitter(add_schema(entry.url))}
+            %br
+            #{google(add_schema(entry.url))}
+            - if @admin_mode
+              #change_order
+                %form{:action => "/move_up", :method => "post"}
+                  %input{:type => "hidden", :name => "order", :value => entry.order}
+                  %input{:type => "submit", :value => "up"}
+                %form{:action => "/move_down", :method => "post"}
+                  %input{:type => "hidden", :name => "order", :value => entry.order}
+                  %input{:type => "submit", :value => "down"}
+            %br{:clear => "both"}
+    #script
+      %script{:type => "text/javascript", :src => "http://b.st-hatena.com/js/bookmark_button.js", :charset => "utf-8", :async => "async"}
+      %script
+        !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
+      %script{:type => "text/javascript"}
+        window.___gcfg = {lang: 'ja'};
+        (function() {
+        var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+        po.src = 'https://apis.google.com/js/plusone.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+        })();
+      %script{:src => "http://code.jquery.com/jquery-latest.js"}
+      %script{:src => "js/bootstrap.min.js"}
 
 
 
