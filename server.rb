@@ -32,7 +32,7 @@ class Entries < Sequel::Model
 end
 
 before do
-  @linktags = ['windows', 'exchange']  
+  @linktags = get_tags(Entries.all)
   @google_analytics = config["GOOGLE_ANALYTICS"]
 end
 
@@ -125,6 +125,25 @@ end
 
 
 helpers do
+  def get_tags(entries)
+    all_tags = Hash::new
+    all_tags.default = 0
+    entries.each { |entry|
+      entry.tags.scan(/\[(.*?)\]/).each {|tag|
+        all_tags[tag] = all_tags[tag] + 1
+      }
+    }
+    
+    result = []
+    all_tags.sort {|a, b|
+      (b[1] <=> a[1])
+    }.each {|key, value|
+      result << key
+    }
+    
+    result
+  end
+
   def add_schema(url)
     if url !~ /^https?/
       if url !~ /\/\//
