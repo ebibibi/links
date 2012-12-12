@@ -33,6 +33,7 @@ end
 
 before do
   @linktags = get_tags(Entries.all)
+  p @linktags
   @google_analytics = config["GOOGLE_ANALYTICS"]
 end
 
@@ -129,18 +130,22 @@ helpers do
     all_tags = Hash::new
     all_tags.default = 0
     entries.each { |entry|
-      entry.tags.scan(/\[(.*?)\]/).each {|tag|
+      entry.tags.scan(/\[(\w+?)\]/).each {|tag|
+        if tag.instance_of?(Array)
+          tag = tag[0]
+        end
+        puts "class of tag is " + tag.class.name
         all_tags[tag] = all_tags[tag] + 1
       }
     }
     
-    result = []
+    result = Array::new
     all_tags.sort {|a, b|
       (b[1] <=> a[1])
-    }.each {|key, value|
+    }.each { |key, value|
       result << key
     }
-    
+
     result
   end
 
