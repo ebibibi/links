@@ -28,9 +28,10 @@
             Links!!
           %div.nav-collapse.collapse
             %ul.nav
-              - @linktags.each do |tag|
-                %li
-                  %a{:href => "/#{tag}"} #{tag}
+              - if !(@linktags.nil?)
+                - @linktags.each do |tag|
+                  %li
+                    %a{:href => "/#{tag}"} #{tag}
 
     %div.container
       #header
